@@ -1,0 +1,32 @@
+//Factorial for 10000.. :) :)
+#include <stdio.h>
+int main ()
+{
+   int a[100000] = {0};
+   int i, j, t, m, n, carry;
+   //freopen ("out.txt", "w", stdout);
+   //printf ("Enter a number to get its factorial: ");
+   //scanf (" %d", &n);
+   n = 10000;
+   a[0] = 2;
+   a[1] = -1;
+   for (i = 3; i <= n; i++) {
+      carry = 0;
+      for (j = 0; ; j++) {
+         if (a[j] == -1 && carry != 0) {
+            a[j+1] = -1;
+            a[j] = 0;
+         }
+         else if (a[j] == -1 && carry == 0) break;
+         t = (a[j] * i) + carry;
+         a[j] = t % 10;
+         carry = t / 10;
+      }
+   }
+   for (i = 0; a[i] != -1; i++);
+   i--;
+   j = i;
+   for ( ; i >= 0; i--) printf ("%d", a[i]);
+   printf ("\nSize: %d\n", j);
+   return 0;
+}
