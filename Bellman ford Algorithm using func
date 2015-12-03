@@ -1,0 +1,63 @@
+#include <bits/stdc++.h>
+#include <iostream>
+#include <cstdio>
+#include <vector>
+#include <queue>
+using namespace std;
+#define mx 100000
+int ua[mx], va[mx], wa[mx];
+void bellman (int n, int e) {
+   int d[n+1];
+   memset (d, 63, sizeof (d)); //setting all distance infinite..
+   d[1] = 0; //Assume source node to be 1..
+   int neg_cycle = false;
+   for (int step = 1; step <= n; step++) {
+      int update = false;
+      for (int i = 1; i <= e; i++) {
+         int u = ua[i]; int v = va[i];
+         if (d[v] > d[u] + wa[i]) {
+            d[v] = d[u] + wa[i];
+            update = true;
+            if (step == n) neg_cycle = true; //step is greater than n-1 & it update.. which means negative cycle existance..
+         }
+      }
+      if (update == false) break; //If any step has no update.. which means shorted distance have found..
+   }
+   if (neg_cycle == false ) {
+      for (int i = 1; i <= n; i++) cout << "Distance of Node: " << i << " is: " << d[i] << endl;
+   }
+   else cout << "Negetive cycle detected!!!" << endl;
+}
+int main ()
+{
+   int n, e;
+   cin >> n >> e;
+   for (int i = 1; i <= e; i++) {
+      cin >> ua[i] >> va[i] >> wa[i];
+   }
+   bellman (n, e); //Sending node & edge numbers..
+   memset (ua, 0, sizeof (ua));
+   memset (va, 0, sizeof (va));
+   memset (wa, 0, sizeof (wa));
+//   int d[n+1];
+//   memset (d, 63, sizeof (d)); //setting all distance infinite..
+//   d[1] = 0;
+//   int neg_cycle = false;
+//   for (int step = 1; step <= n; step++) {
+//      int update = false;
+//      for (int i = 1; i <= e; i++) {
+//         int u = ua[i]; int v = va[i];
+//         if (d[v] > d[u] + wa[i]) {
+//            d[v] = d[u] + wa[i];
+//            update = true;
+//            if (step == n) neg_cycle = true;
+//         }
+//      }
+//      if (update == false) break;
+//   }
+//   if (neg_cycle == false ) {
+//      for (int i = 1; i <= n; i++) cout << "Distance of Node: " << i << " is: " << d[i] << endl;
+//   }
+//   else cout << "Negetive cycle detected!!!" << endl;
+   return 0;
+}
