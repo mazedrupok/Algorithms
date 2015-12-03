@@ -1,0 +1,43 @@
+#include <iostream>
+#include <cstdio>
+#include <vector>
+#include <queue>
+#include <algorithm>
+using namespace std;
+struct node {int x; int y;};
+vector <node > g[100];
+void bfs (node src, node des) {
+   queue <node > q;
+   int visited[100][100] = {0};
+   int level[100][100];
+   node parent[100][100];
+   visited[src.x][src.y] = 1;
+   level[src.x][src.y] = 0;
+   q.push (src);
+   while (q.empty() == 0) {
+      node u = q.front ();
+      q.pop();
+      for (int i = 0; i < g[u].size(); i++) {
+         node v = g[u][i];
+         if (!visited[v.x][v.y]) {
+            visited[v.x][v.y] = 1;
+            level[v.x][v.y] = level[u.x][u.y] + 1;
+            parent[v.x][v.y] = u;
+         }
+      }
+   }
+}
+int main ()
+{
+   int vertex, edge;
+   cout << "Enter Vertex & Edge number: ";
+   cin >> vertex >> edge;
+   for (int i = 0; i < edge; i++) {
+      node a, b;
+      cin >> a.x >> a.y >> b.x >> b.y;
+      g[a].push_back (b);
+      g[b].push_back (a);
+   }
+
+   return 0;
+}
