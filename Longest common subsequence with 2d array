@@ -1,0 +1,28 @@
+#include <iostream>
+#include <cstdio>
+#include <cstring>
+#include <string>
+#include <algorithm>
+using namespace std;
+int ara[1000][1000];
+int main()
+{
+    //freopen ("in.txt", "r", stdin);
+    char s[1010], t[1010];
+    int k = 0;
+    while (gets(s)) {
+        if (s[0] == '#') break;
+        gets(t);
+        int ls = strlen (s);
+        int lt = strlen (t);
+        for (int i = 1; i <= ls; i++) {
+            for (int j = 1; j <= lt; j++) {
+                if (s[i-1] == t[j-1]) ara[i][j] = ara[i-1][j-1] + 1;
+                else ara[i][j] = max (ara[i-1][j], ara[i][j-1]);
+            }
+        }
+        printf ("Case #%d: you can visit at most %d cities.\n", ++k, ara[ls][lt]);
+    }
+
+    return 0;
+}
