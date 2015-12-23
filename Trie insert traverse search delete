@@ -1,0 +1,100 @@
+#include <iostream>
+#include <cstdio>
+#include <cmath>
+#include <cstring>
+#include <cstdlib>
+#include <vector>
+#include <algorithm>
+#include <string>
+#include <set>
+#include <map>
+using namespace std;
+struct node {
+	bool endmark;
+	node *next[26];
+	node() {
+		endmark = false;
+		for(int i = 0; i< 26; i++) next[i] = NULL;
+	}
+} *root;
+void insert(char *str, int len) {
+	node *curr = root;
+	for(int i = 0; i< len; i++) {
+		int id = str[i] - 'a';
+		if(curr->next[id] == NULL) {
+			curr->next[id] = new node();
+        }
+        curr = curr->next[id];
+	}
+	curr->endmark = true;
+}
+bool search(char *str, int len) {
+	node *curr = root;
+	for(int i = 0; i < len; i++) {
+		int id = str[i] - 'a';
+		if(curr->next[id] == NULL) return false;
+		curr = curr->next[id];
+	}
+	return curr->endmark;
+}
+char ss[5000]; int a = 0; //These are used for printAll function..
+
+void printAll (node *cur) {
+    if (cur->endmark ) {
+        ss[a] = '\0';
+        if (ss[0] != '\0') printf ("%s\n", ss);
+    }
+    for (int i = 0; i < 26; i++) {
+        if (cur->next[i] ) {
+            ss[a++] = i+'a';
+            printAll (cur->next[i]);
+            a--;
+            ss[a] = '\0'; //In backtracking I assign all NULL..
+        }
+    }
+}
+void del(node *cur) {
+    for(int i = 0; i< 26; i++)
+        if(cur->next[i])
+            del(cur->next[i]);
+    delete(cur);
+}
+int main(){
+	root = new node();
+	char str[5000];
+	freopen ("in.txt", "r", stdin);
+	int n;
+	cin >> n;
+	for (int i = 0; i < n; i++) {
+        cin >> str;
+        for (int j = 0; str[j]; j++)
+            if (str[j] >= 'A' && str[j] <= 'Z') str[j] += 32;
+        insert (str, strlen (str));
+	}
+	printAll(root);
+	cout << endl;
+	int quries;
+	cin >> quries;
+	while (quries--) {
+        cin >> str;
+        for (int j = 0; str[j]; j++)
+            if (str[j] >= 'A' && str[j] <= 'Z') str[j] += 32;
+        if (search (str, strlen(str)) == 1) cout << "Found" << endl;
+        else cout << "Not Found" << endl;
+	}
+	del(root);
+	return 0;
+}
+//UVA 10815 solution by using trie traversing..
+/*
+input file
+10
+Adventures in Disneyland
+Two blondes were going to Disneyland when
+5
+Two
+two
+in
+were
+ware
+*/
