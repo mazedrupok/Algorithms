@@ -1,0 +1,13 @@
+#include <bits/stdc++.h>
+using namespace std;
+int bigmod (int a, int b, int mod) {
+   if (b == 0) return 1%mod;
+   int x = bigmod (a, b/2, mod);
+   x = (x*x) %mod;
+   if (b %2 == 1) x = (x*a) %mod;
+   return x;
+}
+int main ()
+{
+   cout << bigmod (2, 100, 7);
+}
