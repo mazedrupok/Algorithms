@@ -1,0 +1,37 @@
+#include <bits/stdc++.h>
+using namespace std;
+int bigmod (int a, int b, int mod) {
+   if (b == 0) return 1%mod;
+   int x = bigmod (a, b/2, mod);
+   x = (x*x) %mod;
+   if (b %2 == 1) x = (x*a) %mod;
+   return x%mod;
+}
+int bigsum (int a, int b, int mod) { //time complexity O(log(n) * log(n)) ..
+   if (b == 0) return 0 %mod;
+   int x = (bigsum (a, b/2, mod) %mod) * (1 + bigmod(a, b/2, mod));
+   x = x %mod;
+   if (b %2 == 1) x = (1 + (a*x)) %mod;
+   return x;
+}
+int bigsum1 (int a, int b, int mod) { //time complexity O(log(n) * log(n)) ..
+   if (b == 0) return 0 %mod;
+   int x;
+   if (b %2 == 1) x = 1 + a * bigsum (a, b-1, mod);
+   else x = (bigsum (a, b/2, mod) %mod) * (1 + bigmod(a, b/2, mod));
+   return x%mod;
+}
+int bigsum2 (int a, int b, int mod) { //time complexity O(log(n)) ..
+   if (b == 0) return 0%mod;
+   int x;
+   if (b %2 == 1) x = 1 + a * bigsum1 ((a*a)%mod, b-1, mod);
+   else x = (1 + a) * bigsum1 ((a*a)%mod, b/2, mod);
+   return x%mod;
+}
+int main ()
+{
+   cout << bigmod (2, 100, 7) << endl;
+   cout << bigsum (7, 5, 3) << endl;
+   cout << bigsum1 (7, 5, 3) << endl;
+   cout << bigsum2 (7, 5, 3) << endl;
+}
