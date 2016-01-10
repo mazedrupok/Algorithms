@@ -1,0 +1,66 @@
+/*
+   we know nCr is a integer value.. 
+   so all prime factors of denominator can be deducted from numerator..
+   here I tried to reduce complexity.. :) 
+*/
+#include <bits/stdc++.h>
+using namespace std;
+int pri[30];
+int ara[105][105];
+void primeLess100 () { //Storing 25 Primes in array pri[]..
+   int as = 0;
+   for (int i = 2; i <= 100; i++) {
+      int sq = sqrt (i);
+      bool t = true;
+      for (int j = 2; j <= sq; j++) {
+         if (i %j == 0) {t = false; break;}
+      }
+      if (t == true) pri[as++] = i;
+   }
+}
+void factorial_prime_numbers () { //storing numbers of primeFactor of N! in ara[N][].. n = 1 to 100..
+   memset (ara, 0, sizeof(ara) );
+   for (int i = 2; i <= 100; i++) {
+      for (int j = 0; j < 25 && pri[j] <= i-1; j++) {
+         if (pri[j] < i) ara[i][pri[j]] = ara[i-1][pri[j]]; //N! contains all PrimeFactors of N-1! ..
+      }
+      int t = i;
+      for (int j = 0; j < 25 && pri[j] <= i; j++) { //only N value of N! counting here..
+         while (t %pri[j] == 0) {
+            ara[i][pri[j]]++;
+            t /= pri[j];
+         }
+         if (t == 0) break;
+      }
+   }
+}
+int main ()
+{
+   primeLess100(); // 25 primes exits in 100
+   factorial_prime_numbers ();
+   int n, r;
+   int numerator[100], denominator[100];
+   while (scanf (" %d %d", &n, &r) == 2) {
+      if (n == 0 && r == 0) break;
+      memset (numerator, 0, sizeof (numerator));
+      memset (denominator, 0, sizeof (denominator));
+      int NminusR = n-r;
+      for (int i = 0; i < 25; i++) { //we know nCr = n!/(r! * (n-r)!). its not a fraction value..
+         numerator[pri[i]] = ara[n][pri[i]];//storing numerator of nCr.in fact string their primeFactors
+         denominator[pri[i]] += ara[r][pri[i]]; //storing r! of denominator
+         denominator[pri[i]] += ara[NminusR][pri[i]]; //storing (n-r)! of denominator
+      }
+      for (int i = 0; i < 25; i++) {
+         numerator[pri[i]] -= denominator[pri[i]];//subtracting primeFactors of denominator..
+      }
+      int pro = 1;
+      for (int i = 0; i < 25; i++) {
+         while (numerator[pri[i]] > 0) {
+            pro *= pri[i]; //Product of resting primeFactors in numerator..
+            numerator[pri[i]]--;
+         }
+      }
+      printf ("%d things taken %d at a time is %d exactly.\n", n, r, pro);
+   }
+   return 0;
+}
