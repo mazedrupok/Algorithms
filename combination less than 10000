@@ -1,0 +1,23 @@
+#include <bits/stdc++.h>
+using namespace std;
+vector <int > v[10010];
+void generateNCR () { //it can count nCr less than 10000
+   v[0].push_back(1); //10000 takes 2 sec..
+   v[1].push_back(1);
+   v[1].push_back(1);
+   for (int i = 2; i <= 100000; i++) {
+      for (int j = 0; j <= i; j++) {
+         if (i == j || j == 0) v[i].push_back(1);
+         else if (j == 1 || j == i-1) v[i].push_back(i);
+         else {
+            int temp = v[i-1][j-1] + v[i-1][j];
+            v[i].push_back(temp);
+         }
+      }
+   }
+}
+int main ()
+{
+   generateNCR ();
+   return 0;
+}
