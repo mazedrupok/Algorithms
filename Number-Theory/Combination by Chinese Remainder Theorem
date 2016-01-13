@@ -1,0 +1,47 @@
+/* Lightoj 1067 Combination..
+   with Chinese Remainder Theorem..
+   it works only if MOD is prime and MOD > p.. :) 
+*/
+#include<iostream>
+#include <cstdio>
+#include<vector>
+using namespace std;
+/* This function calculates (a^b)%MOD */
+long long powr (int a, int b, int MAZED)
+{
+    long long x=1, y=a;
+    while(b > 0) {
+        if(b%2 == 1)
+            x = (x*y) %MAZED;
+        y = (y*y) %MAZED;
+        b /= 2;
+    }
+    return x;
+}
+/*  modular Multiplicative Inverse
+    Using Euler's Theorem
+    a^(phi(m)) = 1 (MOD m)
+    a^(-1) = a^(m-2) (MOD m) */
+long long InverseEuler (int n, int MAZED) {
+    return powr (n,MAZED-2,MAZED);
+}
+vector <long long> f(1000000+1, 1);
+void fTable (int n, int MAZED) {
+   for (int i=2; i<=n;i++)
+      f[i]= (f[i-1]*i) % MAZED;
+}
+long long C(int n, int r, int MAZED) {
+    return (f[n]*((InverseEuler(f[r], MAZED) * InverseEuler(f[n-r], MAZED)) % MAZED)) % MAZED;
+}
+
+int main()
+{
+    int n = 1000000,r, MAZED = 999983, tc, k = 0;
+    //freopen ("in.txt", "r", stdin);
+    fTable (n, MAZED);
+    scanf (" %d", &tc);
+    while (tc--) {
+        scanf (" %d %d", &n, &r);
+        printf("Case %d: %lld\n", ++k, C(n,r,MAZED));
+    }
+}
