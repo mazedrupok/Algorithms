@@ -1,0 +1,88 @@
+/* Combination..
+   we know nCr is a integer value.. here n <= 10 lacks..
+   so all prime factors of denominator can be deducted from numerator..
+   here I tried to reduce complexity.. :)
+   //Memory complexity 52MB..
+*/
+#include <bits/stdc++.h>
+using namespace std;
+#define SIZE 1000010
+int primeNum, k = 0;
+int pri[78500];
+bool isprime[SIZE];
+int hor[SIZE];
+int lob[SIZE];
+void primeLessN () { //Storing 78498 Primes in array pri[]..
+   int as = 0;
+   memset (isprime, 0, sizeof (isprime));
+   for (int i = 2; i <= SIZE; i++) {
+      int sq = sqrt (i);
+      bool t = true;
+      for (int j = 2; j <= sq; j++) {
+         if (i %j == 0) {t = false; break;}
+      }
+      if (t == true) {pri[as++] = i; isprime[i] = 1; }
+   }
+   primeNum = as;
+   //cout << pri[78497] << endl;
+}
+int ara[SIZE][22]; //PrimeFactors maximum number in 10Lacks is 20..
+void primeDivisors () {
+   memset (ara, 0, sizeof (ara));
+   for (int i = 2; i < SIZE; i++) {
+      int as = 0;
+      if (isprime[i] == 1) {ara[i][as++] = i; continue;}
+      int t = i;
+      int sq = sqrt (t);
+      for (int j = 0; pri[j] <= sq; j++) {
+         while (t %pri[j] == 0) {
+            ara[i][as++] = pri[j];
+            t /= pri[j];
+         }
+         if (isprime[t] == 1) {ara[i][as++] = t; break;}
+         if (t == 1) break;
+      }
+   }
+
+}
+void nCrByPrimeFactor (int n, int r) { //storing numbers of primeFactor of N! in ara[N][].. n = 1 to 100..
+   memset (lob, 0, sizeof (lob));
+   memset (hor, 0, sizeof (hor));
+   int large, small;
+   if (r > n-r) {large = r; small = n-r;}
+   else {large = n-r; small = r;}
+   for (int i = large+1; i <= n; i++) {
+      for (int j = 0; j < 22 && ara[i][j]; j++) {
+         int temp = ara[i][j];
+         lob[temp]++; //Calculating of primeFactor Numbers in Numerator..
+      }
+   }
+   for (int i = 2; i <= small; i++) {
+      for (int j = 0; j < 22 && ara[i][j]; j++) {
+         int temp = ara[i][j];
+         hor[temp]++; //Calculating of primeFactor numbers in Denominator..
+      }
+   }
+   long long pro = 1;
+   for (int i = 0; i < primeNum; i++) {
+      lob[pri[i]] -= hor[pri[i]]; //Subtracting PrimeFactors from Numerator..
+      while (lob[pri[i]] > 0) {
+         pro = (pro * pri[i]) %1000003; //
+         lob[pri[i]]--;
+      }
+   }
+   printf ("Case %d: %lld\n", ++k, pro);
+}
+int main ()
+{
+   //freopen ("in.txt", "r", stdin);
+   primeLessN(); // 78498 primes exits in 1000000
+   primeDivisors(); //Precalculate all primeFactor of 10 lacks numbers.. storing it in ara[N][21];
+   int n, r, tc;
+   scanf (" %d", &tc);
+   while (tc--) {
+      scanf (" %d %d", &n, &r);
+      nCrByPrimeFactor (n, r);
+   }
+   return 0;
+}
