@@ -1,0 +1,31 @@
+//n queen problem.. :)
+#include <iostream>
+#include <cstdio>
+using namespace std;
+int queen[20], cnt = 0;
+int diagonal1[20], diagonal2[20], column[20];
+//make sure column, diagonal1, diagonal2 are all 0  -initially
+void nqueen (int at, int n) {
+   if (at == n+1) {
+      printf ("%dth way: Row Column:\n", ++cnt);
+      for (int i = 1; i <= n; i++) {
+         printf ("(%d %d) ", i, queen[i]);
+      }
+      printf ("\n");
+   }
+   for (int i = 1; i <= n; i++) {
+      if (column[i] || diagonal1[at+i] || diagonal2[n+at-i]) continue;
+//Sum of row & col of all square in one diagonal are same.. (at+i)
+//subtraction of row & col of all square in another diagonal are same (at-i)
+//note that, i at can be negative and we cant -have array index negative
+//so we are adding offset n with this.
+      queen[at] = i;
+      column[i] = diagonal1[at+i] = diagonal2[n+at-i] = 1;
+      nqueen (at+1, n);
+      column[i] = diagonal1[at+i] = diagonal2[n+at-i] = 0;
+   }
+}
+int main ()
+{
+   nqueen (1, 8); //call with nqueen(1, 8) for 8 queen problem
+}
