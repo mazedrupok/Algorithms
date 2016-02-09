@@ -1,0 +1,24 @@
+#include <iostream>
+using namespace std;
+int wt[100], val[100];
+int knapsack (int W, int n) {
+   if (n == 0 || W == 0) return 0;
+   else if (wt[n-1] > W)
+      return knapsack (W, n-1);
+   else {
+      int t1, t2;
+      t1 = val[n-1] + knapsack (W-wt[n-1], n-1);
+      t2 = knapsack (W, n-1);
+      return (t1 > t2) ? t1 : t2;
+   }
+}
+int main ()
+{
+   int n, hw;
+   cin >> n >> hw;
+   for (int i = 0; i < n; i++) {
+      cin >> wt[i] >> val[i];
+   }
+   cout << knapsack (hw, n);
+   return 0;
+}
