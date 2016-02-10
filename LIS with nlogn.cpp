@@ -53,4 +53,6 @@ int main()
 }
 /*
 output {9, 21, 33, 41, 60, 80}
+21 should be after 33.. that is a mistake of this code.. 
+collected from rabiul :( 
 */
