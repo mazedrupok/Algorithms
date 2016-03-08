@@ -16,7 +16,7 @@ void build (int at, int L, int R) { //build array in O(log2n) ..
 }
 void update (int at, int L, int R, int pos, int value) { //update by O(logn)..
     if (at == pos) {
-        mnm[at] = min (mnm[at], value);
+        mnm[at] = value;
         return;
     }
     int mid = (L+R) /2;
