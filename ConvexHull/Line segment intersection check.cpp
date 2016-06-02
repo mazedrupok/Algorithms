@@ -10,49 +10,49 @@
 */
 #include <iostream>
 using namespace std;
-struct point {
-   int x, y;
+struct Point {
+    int x;
+    int y;
 };
-bool onSegment (point a, point m, point b) {
- if ((m.x>=min(a.x,b.x) && m.x<=max(a.x,b.x)) && (m.y>=min(a.y,b.y) && m.y<=max(a.y,b.y)))
+bool onSegment(Point p, Point q, Point r) {
+ if (q.x <= max(p.x,r.x) && q.x >= min(p.x,r.x) && q.y <= max(p.y,r.y) && q.y >= min(p.y,r.y))
    return true;
  return false;
 }
-int orientation(point a, point b, point c) {
-   int val = (b.y - a.y) * (c.x - b.x) - (b.x - a.x) * (c.y - b.y);
-   if (val == 0) return 0;  // co-linear
-//Val = positive means Clock-wise.
-   return (val > 0)? 1: 2; // clock or counter-clock wise
+int orientation(Point p, Point q, Point r) {
+    // See http://www.geeksforgeeks.org/orientation-3-ordered-points/
+    int val = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y);
+    if (val == 0) return 0;  // colinear
+    return (val > 0)? 1: 2; // clock or counterclock wise
 }
-bool lineIntersect (point a, point b, point c, point d) {
-   int o1, o2, o3, o4;
-   o1 = orientation(a, b, c);
-   o2 = orientation(a, b, d);
-   o3 = orientation(c, d, a);
-   o4 = orientation(c, d, b);
-   if (o1 != o2 && o3 != o4) return true; //general case
-   //Special case
-   //if c lies on ab line
-   if (o1 == 0 && onSegment(a, c, b)) return true;
-   if (o2 == 0 && onSegment(a, c, b)) return true;
-   if (o3 == 0 && onSegment(c, a, d)) return true;
-   if (o4 == 0 && onSegment(c, b, d)) return true;
-   return false;
+bool doIntersect(Point p1, Point q1, Point p2, Point q2) {
+    int o1 = orientation(p1, q1, p2);
+    int o2 = orientation(p1, q1, q2);
+    int o3 = orientation(p2, q2, p1);
+    int o4 = orientation(p2, q2, q1);
+    // General case
+    if (o1 != o2 && o3 != o4)
+        return true;
+//Special Cases: p1, q1 and p2 are colinear and p2 lies on segment p1q1
+    if (o1 == 0 && onSegment(p1, p2, q1)) return true;
+    // p1, q1 and p2 are colinear and q2 lies on segment p1q1
+    if (o2 == 0 && onSegment(p1, q2, q1)) return true;
+    if (o3 == 0 && onSegment(p2, p1, q2)) return true;//similar
+    if (o4 == 0 && onSegment(p2, q1, q2)) return true;//similar
+    return false; // Doesn't fall in any of the above cases
 }
 int main()
 {
-   struct point p1 = {1, 1}, q1 = {10, 1};
-   struct point p2 = {1, 2}, q2 = {10, 2};
+    struct Point p1 = {1, 1}, q1 = {10, 1};
+    struct Point p2 = {1, 2}, q2 = {10, 2};
+    doIntersect(p1, q1, p2, q2)? cout << "Yes\n": cout << "No\n";
 
-   lineIntersect(p1, q1, p2, q2)? cout << "Yes\n": cout << "No\n";
+    p1 = {10, 0}, q1 = {0, 10};
+    p2 = {0, 0}, q2 = {10, 10};
+    doIntersect(p1, q1, p2, q2)? cout << "Yes\n": cout << "No\n";
 
-   p1 = {10, 0}, q1 = {0, 10};
-   p2 = {0, 0}, q2 = {10, 10};
-   lineIntersect(p1, q1, p2, q2)? cout << "Yes\n": cout << "No\n";
-
-   p1 = {-5, -5}, q1 = {0, 0};
-   p2 = {1, 1}, q2 = {10, 10};
-   lineIntersect(p1, q1, p2, q2)? cout << "Yes\n": cout << "No\n";
-
-   return 0;
+    p1 = {-5, -5}, q1 = {0, 0};
+    p2 = {1, 1}, q2 = {10, 10};
+    doIntersect(p1, q1, p2, q2)? cout << "Yes\n": cout << "No\n";
+    return 0;
 }
