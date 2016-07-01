@@ -23,7 +23,7 @@ int return_coin (int amount, int n) {
         else i++;
     }
     return res;
-}
+} 
 int main ()
 {
     int amount;
