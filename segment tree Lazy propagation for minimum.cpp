@@ -19,7 +19,7 @@ void build (int at, int L, int R) {
     build (2*at+1, mid+1, R);
     seg[at] = min (seg[2*at], seg[2*at+1]);
 }
-void update (int at, int L, int R, int l, int r, int value) {
+void update (int at, int L, int R, int l, int r, int value) { //update from l to r
     if (lazy[at] != 0) { //if lazy[] contains previous value..
         seg[at] += lazy[at]; //update by lazy[] value..
         if(L != R) { //if not leaf node..
@@ -43,7 +43,7 @@ void update (int at, int L, int R, int l, int r, int value) {
     update (2*at+1, mid+1, R, l, r, value);
     seg[at] = min (seg[2*at], seg[2*at+1]);
 }
-int query (int at, int L, int R, int l, int r) { //search in range [1,5].. in O(logn)
+int query (int at, int L, int R, int l, int r) { //query from l to r.. in O(logn)
     if (lazy[at] != 0) {
         seg[at] += lazy[at]; //update value from lazy[] value..
         if(L != R) { //if not leaf node..
