@@ -13,14 +13,14 @@ void build (int at, int L, int R) {
     sum[at] = sum[2*at] + sum[2*at+1];
 }
 void update (int at, int L, int R, int pos, int value) {
-    if (at == pos) {
-        sum[at] += value;
+    if (L == R) {
+        sum[at] = (sum[at] + value);
         return;
     }
     int mid = (L+R) /2;
-    if (pos <= at) update (2*at, L, mid, pos, value);
+    if (pos <= mid) update (2*at, L, mid, pos, value);
     else update (2*at+1, mid+1, R, pos, value);
-    sum[at] = sum[2*at] + sum[2*at+1];
+    sum[at] = (sum[2*at] + sum[2*at+1]);
 }
 int query (int at, int L, int R, int l, int r) {
     if (L > r || R < l) return 0;
