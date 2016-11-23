@@ -1,9 +1,8 @@
-#include <iostream>
-#include <cstdio>
-#include <math.h>
+#include <bits/stdc++.h>
+using namespace std;
 bool pri[10000001];
 void sieveOfEratosthenes (int limit) { //works in 10^7
-   pri[0] = 0; pri[1] = 0;                        //prime limitber generator.. start
+   pri[0] = 0; pri[1] = 0;                        //prime number generator.. start
    for (int i = 2; i <= limit; i++) {
       pri[i] = 1;
    }
@@ -19,12 +18,12 @@ int main ()
    int n, limit = 10000000;
    sieveOfEratosthenes(limit);
    while(1) {
-        printf("\nEnter limitber: (press 0 to exit) ");
+        printf("\nEnter number: (press 0 to exit) ");
         scanf("%d", &n);
         if(n == 0) break;
         else if (n > limit) continue;
-        else if (0 == pri[n]) printf("%d is not a prime limitber.\n", n);
-        else printf("%d is a prime limitber.\n", n);
+        else if (0 == pri[n]) printf("%d is not a prime number.\n", n);
+        else printf("%d is a prime number.\n", n);
         printf("\n");
    }
    return 0;
