@@ -2,41 +2,44 @@
 f(n) = a * f(n-1) + b * f(n-3) + c, if(n > 2)
      = 0, if(n ≤ 2)
 */
-#include <bits/stdc++.h>
+#include <bits//stdc++.h>
 using namespace std;
-int mat[4][4], a, b, c;
+#define ll long long
+#define N 4
+int mat[N][N], a, b, c;
 const int mod = 10007;
 void bigmod (int e) {  //mat ^e %mod
     if (e <= 1) return;
     bigmod (e >> 1);
-    int tt[4][4];
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 4; j++) {
+    int tt[N][N];
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
             int sum = 0;
-            for (int k = 0; k < 4; k++) sum += (mat[i][k] * mat[k][j]) %mod;
+            for (int k = 0; k < N; k++) sum += (mat[i][k] * mat[k][j]) %mod;
             tt[i][j] = sum %mod;
         }
     }
-    for (int i = 0; i < 4; i++)
-        for (int j = 0; j < 4; j++)
+    for (int i = 0; i < N; i++)
+        for (int j = 0; j < N; j++)
             mat[i][j] = tt[i][j];
 
     if (e %2 == 1) { //if odd one more multiply with previous square
-        int temp[4][4];
-        for (int i = 0; i < 4; i++)
-        for (int j = 0; j < 4; j++) temp[i][j] = 0;
-        temp[0][0] = a; temp[0][2] = b; temp[0][3] = c;
+        int temp[N][N];
+        for (int i = 0; i < N; i++)
+        for (int j = 0; j < N; j++) temp[i][j] = 0;
+        temp[0][0] = a; temp[0][2] = b; temp[0][3] = c; //NEED TO CUSTOMISED HERE
         temp[1][0] = temp[2][1] = temp[3][3] = 1;
 
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
                 int sum = 0;
-                for (int k = 0; k < 4; k++) sum += (tt[i][k] * temp[k][j]) %mod;
+                for (int k = 0; k < N; k++) sum += (tt[i][k] * temp[k][j]) %mod;
                 mat[i][j] = sum %mod;
             }
         }
     }
 }
+
 int main ()
 {
     int tc, cs = 0, n, m, res;
