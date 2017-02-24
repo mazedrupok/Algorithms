@@ -2,7 +2,7 @@
 using namespace std;
 int mark[1000010];
 vector <int> divi[1000010];
-void divisors (int n) {  //its works in O(n^2)
+void divisors (int n) {  // complexity: O(n) * 10 * (STL time taken)
    for (int i = 1; i <= n; i++)
       for (int j = i; j <= n; j += i)
          divi[j].push_back(i);
