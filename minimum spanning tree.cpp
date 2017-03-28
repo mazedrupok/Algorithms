@@ -15,8 +15,9 @@ struct node {
 };                                                        //it means present nodes is greater..
 vector <node > edge;
 int par[mx];
-int find (int r) {  //getting representative of set..
-   return (r == par[r] ) ? r : find (par[r]);
+int find(int u) {
+	if(u != par[u]) par[u] = find(par[u]);
+	return par[u];
 }
 int mst (int n) {
    sort (edge.begin(), edge.end());
