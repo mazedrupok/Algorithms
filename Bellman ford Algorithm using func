@@ -37,7 +37,7 @@ int main ()
    }
    bellman (n, e); //Sending node & edge numbers..
    memset (ua, 0, sizeof (ua));
-   memset (va, 0, sizeof (va));
+   memset (va, 0, sizeof (va)); 
    memset (wa, 0, sizeof (wa));
 //   int d[n+1];
 //   memset (d, 63, sizeof (d)); //setting all distance infinite..
