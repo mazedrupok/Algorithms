@@ -36,7 +36,7 @@ void dfs (int u) { //depth, heavyChild, parent, SubTreeSize
         subTreeSz[u] += subTreeSz[v];
         if (heavy[u] == -1 || subTreeSz[heavy[u]] < subTreeSz[v]) heavy[u] = v; //creating heavy child
     }
-}
+} 
 int cnt = 1, all = 1;
 void hld (int u, int pa = -1) {
     chain[u] = cnt;
