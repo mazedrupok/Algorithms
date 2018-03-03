@@ -1,42 +1,30 @@
-#include <iostream>
-#include <vector>
-using namespace std;
-char arr[] = {'a', 'b', 'c', 'd', 'e'};
-int taken[20] = {0};
-vector <char > r;
-void permute () {
-   if (r.size() == 5) {
-      for (int i = 0; i < 5; i++) cout << r[i] << " ";
-      cout << endl;
-      return;
-   }
-   for (int i = 0; i < 5; i++) {
-      if (taken[i] == 0) {
-         taken[i] = 1; r.push_back(arr[i]);
-         permute();
-         taken[i] = 0; r.pop_back();
-      }
-   }
-}
-int main ()
-{
-   permute ();
-}
-/*#include <iostream>
-#include <map>
-#include <bits/stdc++.h>
-using namespace std;
+#include <stdio.h>
 
+char arr[20]; //input
+int taken[20] = {0}; //visit
+char r[20]; //temporary array
+int len; //length of input
+
+void permute (int pos) {
+    if (pos == len) {
+        r[pos] = '\0';
+        printf ("%s\n", r);
+        return;
+    }
+    for (int i = 0; i < len; i++) {
+        if (taken[i] == 0) {
+            taken[i] = 1;
+            r[pos] = arr[i];
+            permute(pos+1);
+            taken[i] = 0;
+        }
+    }
+}
 int main ()
 {
-   vector <int > v;
-   for (int i = 1; i < 6; i++) v.push_back (i);
-   int count = 0;
-   while (next_permutation(v.begin(), v.end())) {
-      for (int i = 0; i < 5; i++) cout << v[i] << " ";
-      count++;
-      cout << endl;
-   }
-   cout << count << endl;
+    int i;
+    scanf (" %s", arr);
+    len = 0;
+    for (i = 0; arr[i]; i++ ) len++;
+    permute (0);
 }
-*/
