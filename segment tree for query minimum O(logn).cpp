@@ -15,12 +15,12 @@ void build (int at, int L, int R) { //build array in O(log2n) ..
     mnm[at] = min(mnm[2*at], mnm[2*at+1]);
 }
 void update (int at, int L, int R, int pos, int value) { //update by O(logn)..
-    if (at == pos) {
+    if (L == R) {
         mnm[at] = value;
         return;
     }
     int mid = (L+R) /2;
-    if (pos <= at) update (2*at, L, mid, pos, value);
+    if (pos <= mid) update (2*at, L, mid, pos, value);
     else update (2*at+1, mid+1, R, pos, value);
     mnm[at] = min(mnm[2*at], mnm[2*at+1]);
 }
