@@ -4,7 +4,7 @@
 using namespace std;
 
 ///BST implementation
-/// Complexity of insert, delete, getMin, getNth -> O(BST_Height)
+
 struct BstData {
     int f;
     int s;
@@ -26,6 +26,7 @@ struct BstData {
 struct BstNode {
     BstData data;
     int numberOfSubNode;
+    int height;
     BstNode *left;
     BstNode *right;
 };
@@ -33,14 +34,23 @@ BstNode *Root;
 BstNode* newBstNode(BstData data) {
     BstNode *node = new BstNode;
     node->numberOfSubNode = 1;
+    node->height = 1;
     node->data = data;
     node->left = node->right = 0;
     return node;
 }
-BstNode* updateNumberOfSubNode(BstNode *node) {
+BstNode* updateNode(BstNode *node) {
     node->numberOfSubNode = 1;
-    if (node->left) node->numberOfSubNode += node->left->numberOfSubNode;
-    if (node->right) node->numberOfSubNode += node->right->numberOfSubNode;
+    node->height = 0;
+    if (node->left) {
+        node->numberOfSubNode += node->left->numberOfSubNode;
+        node->height = max(node->height, node->left->height);
+    }
+    if (node->right) {
+        node->numberOfSubNode += node->right->numberOfSubNode;
+        node->height = max(node->height, node->right->height);
+    }
+    node->height++;
     return node;
 }
 BstNode* bstInsert(BstNode *root, BstData key) { // insert key
@@ -54,7 +64,7 @@ BstNode* bstInsert(BstNode *root, BstData key) { // insert key
     else {
         root->right = bstInsert(root->right, key);
     }
-    root = updateNumberOfSubNode(root);
+    root = updateNode(root);
     return root;
 }
 BstNode* getMinNode(BstNode *root) {
@@ -89,7 +99,7 @@ BstNode* bstDelete(BstNode *root, BstData key) {
         root->data = minNode->data; // found and replaced by min value
         root->right = bstDelete(root->right, minNode->data); // delete min value to avoid duplicate
     }
-    root = updateNumberOfSubNode(root);
+    root = updateNode(root);
     return root;
 }
 BstNode* bstNthNode(BstNode* root, int n) {
@@ -120,7 +130,7 @@ void bstInorder(BstNode *root) {
         printf("Go left\n");
         bstInorder(root->left);
     }
-    printf("%d %d %d\n", root->data.f, root->data.s, root->numberOfSubNode);
+    printf("%d %d %d %d\n", root->data.f, root->data.s, root->numberOfSubNode, root->height);
     if (root->right) {
         printf("Go right\n");
         bstInorder(root->right);
