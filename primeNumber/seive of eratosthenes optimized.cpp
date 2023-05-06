@@ -1,3 +1,5 @@
+// Tested with https://www.codechef.com/problems/CHKPRM
+
 #include <bits/stdc++.h>
 using namespace std;
 
