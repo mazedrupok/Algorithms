@@ -3,13 +3,13 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-const int N = 100000000; // 10^8 needs 1.5 sec to generate
+const int N = 100000000; // 10^8 needs 0.5 sec, 6MB
 
 // Dividing with 2, as we are discarding even numbers from boolean storage
 // Dividing with 32, the bit size of integer type
 unsigned int status[(N/2)/32] = { 0 }; //needs 1562500*4 bytes or 6MB
-bool check(int N,int pos){return (bool)(N & (1<<pos));}
-int Set(int N,int pos){    return N=N | (1<<pos);}
+bool check(int N,int pos) {return (bool)(N & (1<<pos));}
+int Set(int N,int pos) {return N=N | (1<<pos);}
 
 void bitSieveOfEratosthenes(int N) {
      int sqrtN = int( sqrt( N ) ) + 1;
